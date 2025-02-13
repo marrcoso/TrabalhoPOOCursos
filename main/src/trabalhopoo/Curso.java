@@ -35,15 +35,6 @@ public class Curso implements Inscricao{
         return matriculados;
     }
 
-    @Override
-    public String toString() {
-        return "Curso{" +
-                "nome='" + nome + '\'' +
-                ", cargaHoraria=" + cargaHoraria +
-                ", professor='" + professor + '\'' +
-                '}';
-    }
-
     public void emitirCertificado(Aluno aluno){};
 
     @Override
