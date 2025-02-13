@@ -24,9 +24,8 @@ public class Main {
         List<Aluno> alunos = new ArrayList<>();
         List<Aluno> alunosDisponiveis = new ArrayList<>();
 
-
-//        cursos.add(new CursoPresencial("ADS", 4, "Fernando", "IFSC", "ifsc.com.br"));
-//        cursos.add(new CursoPresencial("EMBARCADOS", 4, "Fernando", "IFSC", "ifsc.com.br"));
+        cursos.add(new CursoPresencial("ADS", 4, "Fernando", "IFSC", "ifsc.com.br"));
+        cursos.add(new CursoPresencial("EMBARCADOS", 4, "Fernando", "IFSC", "ifsc.com.br"));
 
         while (escolha != 9) {
             System.out.println("Menu"
@@ -34,6 +33,7 @@ public class Main {
             + "\n2 - Cadastrar Aluno"
             + "\n3 - Matricular Aluno em um curso"
             + "\n4 - Cancelar Matricula em um curso"
+            + "\n5 - Emitir Certificado"
             + "\n9 - Sair");
 
             escolha = sc.nextInt();
@@ -150,44 +150,99 @@ public class Main {
 
                 if (cursoEncontrado == null) {
                     System.out.println("Curso não encontrado.");
+                }
+
+                Aluno alunoEncontrado = null;
+                for (Aluno it : alunosDisponiveis) {
+                    if (cursoEncontrado.getMatriculados().contains(it)) {
+                        alunoEncontrado = it;
+                        System.out.println(it);
+                    }
+                }
+
+                if (alunoEncontrado == null) {
+                    throw new RuntimeException("Não existem alunos cadastrados no curso de " + cursoEncontrado.getNome() + " para remover.");
+                }
+
+                if (alunosDisponiveis.isEmpty()) {
+                    throw new RuntimeException("Não existem alunos cadastrados no sistema para remover do curso de " + cursoEncontrado.getNome() + ".");
+                }
+                System.out.println("Digite a matricula do aluno a ser cancelado neste curso: ");
+                try {
+                    matricula = Long.parseLong(sc1.nextLine());
+                } catch (NumberFormatException e) {
+                    throw new NumberFormatException("A matrícula deve conter somente números!");
+                }
+
+                alunoEncontrado = null;
+                for (Aluno it : cursoEncontrado.getMatriculados()) {
+                    if (it.getMatricula().equals(matricula)) {
+                        alunoEncontrado = it;
+                        break;
+                    }
+                }
+
+                if (alunoEncontrado == null) {
+                    System.out.println("Aluno não encontrado no curso de " + nomeCurso + ".");
                 } else {
-                    Aluno alunoEncontrado = null;
-                    for (Aluno it : alunosDisponiveis) {
-                        if (cursoEncontrado.getMatriculados().contains(it)) {
-                            alunoEncontrado = it;
-                            System.out.println(it);
-                        }
-                    }
+                    cursoEncontrado.cancelarMatricula(alunoEncontrado);
+                }
+            }
+            if (escolha == 5) {
+                System.out.println("Digite o nome do curso: ");
+                nomeCurso = sc1.nextLine();
 
-                    if (alunoEncontrado == null) {
-                        throw new RuntimeException("Não existem alunos cadastrados no curso de " + cursoEncontrado.getNome() + " para remover.");
+                Curso cursoEncontrado = null;
+                for (Curso it : cursos) {
+                    if (it.getNome().equalsIgnoreCase(nomeCurso)) {
+                        cursoEncontrado = it;
+                        break;
                     }
+                }
 
-                    if (alunosDisponiveis.isEmpty()) {
-                        throw new RuntimeException("Não existem alunos cadastrados no sistema para remover do curso de " + cursoEncontrado.getNome() + ".");
-                    }
-                    System.out.println("Digite a matricula do aluno a ser cancelado neste curso: ");
-                    try {
-                        matricula = Long.parseLong(sc1.nextLine());
-                    } catch (NumberFormatException e) {
-                        throw new NumberFormatException("A matrícula deve conter somente números!");
-                    }
+                if (cursoEncontrado == null) {
+                    throw new RuntimeException("Curso não encontrado.");
+                }
 
-                    alunoEncontrado = null;
-                    for (Aluno it : cursoEncontrado.getMatriculados()) {
-                        if (it.getMatricula().equals(matricula)) {
-                            alunoEncontrado = it;
-                            break;
-                        }
+                Aluno alunoEncontrado = null;
+                for (Aluno it : alunosDisponiveis) {
+                    if (cursoEncontrado.getMatriculados().contains(it)) {
+                        alunoEncontrado = it;
+                        System.out.println(it);
                     }
+                }
 
-                    if (alunoEncontrado == null) {
-                        System.out.println("Aluno não encontrado no curso de " + nomeCurso + ".");
-                    } else {
-                        cursoEncontrado.cancelarMatricula(alunoEncontrado);
+                if (alunoEncontrado == null) {
+                    throw new RuntimeException("Não existem alunos cadastrados no curso de " + cursoEncontrado.getNome() + " para emitir certificado.");
+                }
+
+                if (alunosDisponiveis.isEmpty()) {
+                    throw new RuntimeException("Não existem alunos cadastrados no sistema .");
+                }
+
+                System.out.println("Digite a matricula do aluno a ser emitida neste curso: ");
+                try {
+                    matricula = Long.parseLong(sc1.nextLine());
+                } catch (NumberFormatException e) {
+                    throw new NumberFormatException("A matrícula deve conter somente números!");
+                }
+
+                alunoEncontrado = null;
+                for (Aluno it : cursoEncontrado.getMatriculados()) {
+                    if (it.getMatricula().equals(matricula)) {
+                        alunoEncontrado = it;
+                        break;
                     }
+                }
+
+                if (alunoEncontrado == null) {
+                    System.out.println("Aluno não encontrado no curso de " + nomeCurso + ".");
+                } else {
+                    cursoEncontrado.emitirCertificado(alunoEncontrado);
                 }
             }
         }
+        System.out.println("");
+        System.out.println("Fim do código!");
     }
 }

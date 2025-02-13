@@ -44,6 +44,8 @@ public class Curso implements Inscricao{
                 '}';
     }
 
+    public void emitirCertificado(Aluno aluno){};
+
     @Override
     public void matricularAluno(Aluno aluno) {
         if (matriculados.contains(aluno)) {

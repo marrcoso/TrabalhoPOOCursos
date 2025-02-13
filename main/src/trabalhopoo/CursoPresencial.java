@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class CursoPresencial extends Curso {
     private String localDeAula;
     private String linkDeAcesso;
-    Curso curso;
     Aluno aluno;
 
     public CursoPresencial(String nome, int cargaHoraria, String professor, String localDeAula, String linkDeAcesso) {
@@ -14,13 +13,14 @@ public class CursoPresencial extends Curso {
         this.linkDeAcesso = linkDeAcesso;
     }
 
-    public String calcularDuracao() {
-        int duracao = curso.getCargaHoraria()*5;
-        return duracao + "horas na semana.";
+    public int calcularDuracao() {
+        int duracao = this.getCargaHoraria()*5;
+        return duracao;
     }
 
-    public String emitirCertificado() {
-        return "CERTIFICO QUE O CURSO " + curso.getNome() + " PRESENCIAL FEITO POR " + aluno.getNome() + " FOI CONCLUÍDO COM UM TOTAL DE: "
-                + "\n" + calcularDuracao() + " HORAS SEMANAIS.";
+    @Override
+    public void emitirCertificado(Aluno aluno) {
+        System.out.println("CERTIFICO QUE O CURSO PRESENCIAL DE " + this.getNome() + " FEITO POR " + aluno.getNome() + " FOI CONCLUÍDO COM UM TOTAL DE: "
+                + "\n" + calcularDuracao() + " HORAS SEMANAIS.");
     }
 }
